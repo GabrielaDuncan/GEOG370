@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My First Map!</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+
+    <script src = "./data/bell_tower_4326.geojson"></script>
+    <script src = "./data/davis_library_4326.geojson"></script>
+    <script src = "./data/greenlaw_hall_4326.geojson"></script>
+ 
+</head>
+<body>
+
+    <div id="mapid"></div>
+    <style>
+        #mapid{width: 900px; height: 500px;}
+    </style>
+
+    <script>
+        var map = L.map("mapid").setView([35.9101, -79.0503], 17);
+        L.tileLayer('https://tile.opentopomap.org/{z}/{x}/{y}.png',{}).addTo(map)
+        L.marker([35.910416, -79.049331]).addTo(map)
+            .bindPopup("Greenlaw Hall")
+            .openPopup();
+
+        L.marker([35.911185, -79.048001]).addTo(map)
+            .bindPopup("Davis Library")
+            .openPopup();
+
+        L.marker([35.9086, -79.0492]).addTo(map)
+            .bindPopup("Bell Tower")
+            .openPopup();
+
+        // L.geoJSON(belltower).addTo(map)
+        var uncIcon = L.icon({
+            iconUrl: 'https://img.favpng.com/5/18/2/democracy-church-bell-drawing-clip-art-png-favpng-cRLVN0qU8phqDnd8u43xqwkj1.jpg',
+            iconSize: [50,50],
+            popupAnchor: [0,0]
+        });
+        
+        var customPopup = "Bell Tower<br/><img src='https://www.goodfreephotos.com/cache/united-states/north-carolina/unc/morehead-patterson-bell-tower-unc-chapel-hill-north-carolina_800.jpg?cached=1522604409'width='50px'/>";
+
+        L.geoJSON(belltower, { // a
+        pointToLayer: function (feature, latlng) { // b
+        return L.marker(latlng, {icon: uncIcon});}}) // c
+        .bindPopup(customPopup) // d
+        .addTo(map); //
+
+        // L.geoJSON(greenlawhall).addTo(map)
+        var uncIcon= L.icon({
+            iconUrl: 'https://pngimg.com/uploads/heart/heart_PNG51338.png',
+            iconSize: [50,50],
+            popupAnchor: [0,0]
+        });
+
+        var customPopup = "Greenlaw Hall<br/><img src='https://chapelboromedia.s3.amazonaws.com/uploads/2014/09/greenlaw-hall.jpg'width='50px'/>";
+
+        L.geoJSON(greenlawhall, { // a
+        pointToLayer: function (feature, latlng) { // b
+        return L.marker(latlng, {icon: uncIcon});}}) // c
+        .bindPopup(customPopup) // d
+        .addTo(map); //
+
+        //L.geoJSON(davislibrary).addTo(map)
+        var uncIcon = L.icon({
+            iconUrl: 'https://www.clipartmax.com/png/middle/2-21945_books-for-clip-art-books-clipart-png.png',
+            iconSize: [50,50],
+            popupAnchor: [0,0]
+        });
+
+        var customPopup = "Davis Library<br/><img src='https://1.bp.blogspot.com/-jTbMtJpJoDo/T66EnKPBIBI/AAAAAAAACQM/iu-YiZGAQfs/s1600/DSC01232.JPG'width='50px'/>";
+
+        L.geoJSON(davislibrary, { // a
+        pointToLayer: function (feature, latlng) { // b
+        return L.marker(latlng, {icon: uncIcon});}}) // c
+        .bindPopup(customPopup) // d
+        .addTo(map); //
+
+
+
+
+
+
+    </script>
+    
+</body>
+</html>
