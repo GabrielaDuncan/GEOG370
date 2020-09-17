@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Epcot</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+  <script src = "./Data/GranFiestaGeoJSON"></script>
+  <script src = "./Data/TheSeaWithNemoAndFriendsGeoJSON"></script>
+  <script src = "./Data/GranFiestaGeoJSON"></script>
+ 
+ <style type="text/css">
+    body {
+       margin: 0;
+       padding: 0;
+    }
+    html, body, #map{
+       width: 100%;
+       height: 100%;
+    }
+  </style>     
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+      var map = L.map('map').setView([28.36962582096972, -81.55558213999896], 16.0);
+
+      var newphoto = L.tileLayer('/Tiles/{z}/{x}/{y}.jpg', {
+          minZoom: 12,
+          maxZoom: 16,
+          tms: false,
+          attribution: 'USGS'
+        }).addTo(map)
+
+      var oldphoto= L.tileLayer('./{z}/{x}/{y}.png', {
+          minZoom: 12,
+          maxZoom: 16,
+          tms: false,
+          attribution: 'USGS'
+      }).addTo(map); 
+
+      var tiles = {
+        "Epcot 2002": oldphoto,
+        "Epcot 2011": newphoto
+      }
+
+      var vectors = {
+        "Soarin'": L.geoJSON,
+        "The Gran Fiesta Tour": L.geoJSON,
+        "The Sea With Nemo and Friends": L.geoJSON
+      }
+  
+     // L.geoJSON(nemo).addTo(map)
+     var nemoIcon = L.icon({
+        iconUrl: 'https://www.clipartmax.com/png/middle/279-2793898_youtube-pixar-drawing-clip-art-nemo-png.png',
+        iconSize: [25,25],
+        popupAnchor: [0,0]
+     });
+
+      var nemoPopup = "The Sea With Nemo and Friends was added to Epcot in January 24, 2007. I visited this attraction once, and I got to speak to one of the characters through an interactive show, but then someone took my mic from me!<br/><img src='https://www.tripsavvy.com/thmb/ub3tamQYX01virntfWrmzGEE1EM=/2391x1793/smart/filters:no_upscale()/The-Seas-with-Nemo-and-Friends-Ride-58936da03df78caebcbc00dd.jpg'width='50px'/>";
+      
+      var nemo = L.geoJSON (nemo, {
+        pointToLayer: function (feature, latlng){
+        return L.marker (latlng, {icon: nemoIcon});}})
+        .bindPopup (nemoPopup)
+        .addTo(map);
+
+    // L.geoJSON(soarin).addTo(map)
+    var soarinIcon = L.icon({
+      iconUrl: 'https://i.etsystatic.com/5900657/r/il/7955b3/995023904/il_570xN.995023904_rjk5.jpg',
+      iconSize: [25,25],
+      popupAnchor: [0,0]
+    });
+
+    var soarin = "Soarin' Around the World was added as an attraction to the Epcot Theme Park on May 5 2005<br/><img src='https://www.tripsavvy.com/thmb/EckDjjAAN98_ehCc0tG9yxEQ180=/1744x1744/smart/filters:no_upscale()/SoarinaroundtheWorldDisneyride-5a787ddb04d1cf003771a78f.jpg'width='50px'/>";
+
+    var soarin = L.geoJSON (soarin, {
+      pointToLayer: function (feature, latlng){
+      return L.marker (latlng, {icon: soarinIcon});}})
+      .bindPopup (soarinPopup)
+      .addTo(map);
+
+    //L.geoJSON(granfiesta).addTo(map)
+    var granfiesta = L.icon({
+      iconUrl: 'https://cache.undercovertourist.com/media_file/gran-fiesta-tour-starring-the-three-caballeros-12613.jpg',
+      iconSize: [25,25],
+      popupAnchor: [0,0]
+    });
+
+    var granfiesta = "The Gran Fiesta Tour Starring The Three Caballeros was added to Epcot on April 2, 2007<br/><img src='https://cdn1.parksmedia.wdprapps.disney.com/media/blog/wp-content/uploads/2019/01/ksodjfgivfbgfdkgbdhsj483.jpg'width='50px'/>";
+
+    var granfiesta = L.geoJSON (granfiesta, {
+      pointToLayer: function (feature, latlng){
+      return L. marker (latlng, {icon: granfiestaIcon});}})
+      .bindPopup (granfiestaPopup)
+      .addTo(map);
+
+      L.control.layers(tiles, vectors).addTo(map);
+
+</script>
+</body>
+</html>
