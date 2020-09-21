@@ -12,9 +12,9 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
   crossorigin=""></script>
-  <script src = "./Data/GranFiestaGeoJSON"></script>
-  <script src = "./Data/TheSeaWithNemoAndFriendsGeoJSON"></script>
-  <script src = "./Data/GranFiestaGeoJSON"></script>
+  <script src = "./Data/GranFiesta.geojson"></script>
+  <script src = "./Data/Soarin.geojson"></script>
+  <script src = "./Data/nemo.geojson"></script>
  
  <style type="text/css">
     body {
@@ -30,31 +30,22 @@
 <body>
   <div id="map"></div>
   <script>
-      var map = L.map('map').setView([28.36962582096972, -81.55558213999896], 16.0);
+      var map = L.map('map').setView([28.36962582096972, -81.55558213999896], 14.0);
 
-      var newphoto = L.tileLayer('/Tiles/{z}/{x}/{y}.jpg', {
-          minZoom: 12,
-          maxZoom: 16,
-          tms: false,
-          attribution: 'USGS'
-        }).addTo(map)
+      var ESRI = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+      }).addTo(map);
 
-      var oldphoto= L.tileLayer('./{z}/{x}/{y}.png', {
-          minZoom: 12,
-          maxZoom: 16,
-          tms: false,
-          attribution: 'USGS'
-      }).addTo(map); 
+      var oldphoto =  L.tileLayer('./TilesHW4/{z}/{x}/{y}.png', {
+        minZoom: 12,
+        maxZoom: 16,
+        tms: false,
+        attribution: 'USGS'
+      })
 
-      var tiles = {
+      var daTiles = {
         "Epcot 2002": oldphoto,
-        "Epcot 2011": newphoto
-      }
-
-      var vectors = {
-        "Soarin'": L.geoJSON,
-        "The Gran Fiesta Tour": L.geoJSON,
-        "The Sea With Nemo and Friends": L.geoJSON
+        "Epcot 2020": ESRI
       }
   
      // L.geoJSON(nemo).addTo(map)
@@ -71,7 +62,22 @@
         return L.marker (latlng, {icon: nemoIcon});}})
         .bindPopup (nemoPopup)
         .addTo(map);
+    
+    //L.geoJSON(granfiesta).addTo(map)
+    var GranFiestaIcon = L.icon({
+      iconUrl: 'https://cache.undercovertourist.com/media_file/gran-fiesta-tour-starring-the-three-caballeros-12613.jpg',
+      iconSize: [25,25],
+      popupAnchor: [0,0]
+    });
 
+    var GranFiestaPopup = "The Gran Fiesta Tour Starring The Three Caballeros was added to Epcot on April 2, 2007<br/><img src='https://cdn1.parksmedia.wdprapps.disney.com/media/blog/wp-content/uploads/2019/01/ksodjfgivfbgfdkgbdhsj483.jpg'width='50px'/>";
+
+    var GranFiesta = L.geoJSON (granfiesta, {
+      pointToLayer: function (feature, latlng){
+      return L. marker (latlng, {icon: GranFiestaIcon});}})
+      .bindPopup (GranFiestaPopup)
+      .addTo(map);
+    
     // L.geoJSON(soarin).addTo(map)
     var soarinIcon = L.icon({
       iconUrl: 'https://i.etsystatic.com/5900657/r/il/7955b3/995023904/il_570xN.995023904_rjk5.jpg',
@@ -79,30 +85,21 @@
       popupAnchor: [0,0]
     });
 
-    var soarin = "Soarin' Around the World was added as an attraction to the Epcot Theme Park on May 5 2005<br/><img src='https://www.tripsavvy.com/thmb/EckDjjAAN98_ehCc0tG9yxEQ180=/1744x1744/smart/filters:no_upscale()/SoarinaroundtheWorldDisneyride-5a787ddb04d1cf003771a78f.jpg'width='50px'/>";
+    var soarinPopup = "Soarin' Around the World was added as an attraction to the Epcot Theme Park on May 5 2005<br/><img src='https://www.tripsavvy.com/thmb/EckDjjAAN98_ehCc0tG9yxEQ180=/1744x1744/smart/filters:no_upscale()/SoarinaroundtheWorldDisneyride-5a787ddb04d1cf003771a78f.jpg'width='50px'/>";
 
     var soarin = L.geoJSON (soarin, {
       pointToLayer: function (feature, latlng){
       return L.marker (latlng, {icon: soarinIcon});}})
       .bindPopup (soarinPopup)
       .addTo(map);
+       
+      var daVectors = {
+        "Soarin'": soarin,
+        "The Gran Fiesta Tour": GranFiesta,
+        "The Sea With Nemo and Friends": nemo
+      }
 
-    //L.geoJSON(granfiesta).addTo(map)
-    var granfiesta = L.icon({
-      iconUrl: 'https://cache.undercovertourist.com/media_file/gran-fiesta-tour-starring-the-three-caballeros-12613.jpg',
-      iconSize: [25,25],
-      popupAnchor: [0,0]
-    });
-
-    var granfiesta = "The Gran Fiesta Tour Starring The Three Caballeros was added to Epcot on April 2, 2007<br/><img src='https://cdn1.parksmedia.wdprapps.disney.com/media/blog/wp-content/uploads/2019/01/ksodjfgivfbgfdkgbdhsj483.jpg'width='50px'/>";
-
-    var granfiesta = L.geoJSON (granfiesta, {
-      pointToLayer: function (feature, latlng){
-      return L. marker (latlng, {icon: granfiestaIcon});}})
-      .bindPopup (granfiestaPopup)
-      .addTo(map);
-
-      L.control.layers(tiles, vectors).addTo(map);
+      L.control.layers(daVectors, daTiles).addTo(map);
 
 </script>
 </body>
